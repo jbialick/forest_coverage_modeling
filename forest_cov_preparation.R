@@ -1,4 +1,7 @@
-forest <- read.csv("C:\\Users\\jbialick\\Documents\\UCSD Data Mining Certificate\\Data Mining II\\Forest Cover\\forest_coverage_modeling\\forest_cov.data", header = FALSE)
+# mac path /Users/jbialick/Education/UCSD/Data Mining II/
+# pc path 
+
+forest <- read.csv("/Users/jbialick/Education/UCSD/Data Mining II/forest_cov.data", header = FALSE)
 colnames(forest) <- c(
     "Elevation"
     ,"Aspect"
@@ -149,23 +152,23 @@ forest$Horizontal_Distance_To_Fire_Points <- scale(forest$Horizontal_Distance_To
 
 library(caret)
 
+# Reduce size of test data
+forest_redux <- forest[sample(nrow(forest),300000), ]
+
 # Percent split for training (10%)
-sample_size <- floor(0.1 * nrow(forest))
+sample_size <- floor(0.66 * nrow(forest_redux))
 
 # Set seed and generate sampling row indices
 set.seed(333)
-train_index <- sample(seq_len(nrow(forest)), size = sample_size)
+train_index <- sample(seq_len(nrow(forest_redux)), size = sample_size)
 
 # Generate train & test sets
-forest_train <- forest[train_index, ]
-forest_test <- forest[-train_index, ]
-
-# Reduce size of test data
-forest_test <- forest_test[sample(nrow(forest_test),150000), ]
+forest_train <- forest_redux[train_index, ]
+forest_test <- forest_redux[-train_index, ]
 
 #---------------------------------------------------------------------
 # Balance classes in Training dataset
-# NOTE - CURRENTLY DOIGN THIS IN WEKA, HAVE NOT FIGURED OUT R METHOD
+# NOTE - CURRENTLY DOING THIS IN WEKA, HAVE NOT FIGURED OUT R METHOD
 #---------------------------------------------------------------------
 
 #library(DMwR)
@@ -185,9 +188,9 @@ forest_test <- forest_test[sample(nrow(forest_test),150000), ]
 # Write to .arff for WEKA
 #---------------------------------------------------------------------
 library(foreign)
-write.arff(forest, file = "C:\\Users\\jbialick\\Documents\\UCSD Data Mining Certificate\\Data Mining II\\Forest Cover\\forest_cov.arff")
-write.arff(forest_train, file = "C:\\Users\\jbialick\\Documents\\UCSD Data Mining Certificate\\Data Mining II\\Forest Cover\\forest_cov_train.arff")
-write.arff(forest_test, file = "C:\\Users\\jbialick\\Documents\\UCSD Data Mining Certificate\\Data Mining II\\Forest Cover\\forest_cov_test.arff")
+#write.arff(forest, file = "/Users/jbialick/Education/UCSD/Data Mining II/forest_cov.arff")
+write.arff(forest_train, file = "/Users/jbialick/Education/UCSD/Data Mining II/forest_cov_train.arff")
+write.arff(forest_test, file = "/Users/jbialick/Education/UCSD/Data Mining II/forest_cov_test.arff")
 
 
 
